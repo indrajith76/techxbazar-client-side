@@ -5,8 +5,9 @@ import withAutoplay from "react-awesome-slider/dist/autoplay";
 import "react-awesome-slider/dist/styles.css";
 import "./Home.css";
 import axios from "axios";
-import MoonLoader from "react-spinners/MoonLoader";
+
 import { FaArrowRight } from "react-icons/fa";
+import Loader from "../../components/Loader/Loader";
 
 const AutoplaySlider = withAutoplay(AwesomeSlider);
 
@@ -22,17 +23,7 @@ const Home = () => {
   }, []);
 
   if (loading) {
-    return (
-      <div className="flex justify-center my-20">
-        <MoonLoader
-          color={"#ff6117"}
-          loading={true}
-          size={60}
-          aria-label="Loading Spinner"
-          data-testid="loader"
-        />
-      </div>
-    );
+    return <Loader></Loader>
   }
   console.log(categories);
   return (

@@ -37,7 +37,7 @@ const Navbar = () => {
   return (
     <div className="px-4 py-5 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-0">
       <div className="relative flex items-center justify-between">
-        <Link href="/" className="inline-flex items-center">
+        <Link to="/" className="inline-flex items-center">
           <img className="w-52" src={logo} alt="" />
         </Link>
         <ul className="flex items-center hidden space-x-8 lg:flex">{navItems}</ul>
@@ -68,14 +68,14 @@ const Navbar = () => {
               <div className="p-5 bg-white border rounded shadow-sm">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <a
-                      href="/"
+                    <Link
+                      to="/"
                       aria-label="Company"
                       title="Company"
                       className="inline-flex items-center"
                     >
                       <img src={logo} className="w-40" alt="" />
-                    </a>
+                    </Link>
                   </div>
                   <div>
                     <button
