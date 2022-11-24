@@ -25,7 +25,7 @@ const Navbar = () => {
       </li>
       <li>
         <Link
-          to="/"
+          to="/login"
           className="inline-flex items-center justify-center font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-primary hover:bg-orange-500 focus:shadow-outline focus:outline-none btn-sm"
         >
           Login
