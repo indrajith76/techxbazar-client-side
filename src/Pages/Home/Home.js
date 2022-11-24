@@ -1,12 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import AwesomeSlider from "react-awesome-slider";
 import withAutoplay from "react-awesome-slider/dist/autoplay";
 import "react-awesome-slider/dist/styles.css";
 import "./Home.css";
+import axios from "axios";
+import MoonLoader from "react-spinners/MoonLoader";
+import { FaArrowRight } from "react-icons/fa";
 
 const AutoplaySlider = withAutoplay(AwesomeSlider);
 
 const Home = () => {
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios.get("http://localhost:5000/categories").then((data) => {
+      setCategories(data.data);
+    });
+    setLoading(false);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center my-20">
+        <MoonLoader
+          color={"#ff6117"}
+          loading={true}
+          size={60}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
+  }
+  console.log(categories);
   return (
     <div className="container mx-auto">
       <AutoplaySlider
@@ -139,12 +167,26 @@ const Home = () => {
       </AutoplaySlider>
       <div className="my-20">
         <h2 className="text-4xl">Advertised Items</h2>
-        <div className="h-96 border-2 border-red-600">
-        </div>
+        <div className="h-96 border-2 border-red-600"></div>
       </div>
       <div className="my-20">
-        <h2 className="text-4xl">Product Categories</h2>
-        <div className="h-96 border-2 border-red-600">
+        <h2 className="text-4xl font-semibold mb-10">Product Categories</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mx-5 lg:mx-0">
+          {categories.map((category) => (
+            <Link to={`/category/${category._id}`} key={category._id}>
+              <div className="border shadow-lg flex justify-center flex-col rounded-xl overflow-hidden p-5">
+                <div className="flex justify-center h-64">
+                  <img className="w-64 hover:w-72 duration-500" src={category.image} alt="" />
+                </div>
+                <div className="flex items-center justify-between">
+                  <h4 className="text-3xl">{category.name}</h4>
+                  <h4 className="text-2xl">
+                    <FaArrowRight />
+                  </h4>
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </div>
