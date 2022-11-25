@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
@@ -9,9 +9,16 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const [isOnModal, setIsOnModal] = useState(true);
 
   const handleLogin = (data) => {
     console.log(data);
+  };
+
+  const handleResetPassword = (event) => {
+    event.preventDefault();
+    console.log(event.target.email.value);
+    setIsOnModal(false);
   };
 
   return (
@@ -30,6 +37,7 @@ const Login = () => {
             type="email"
             id="email"
             className="w-full input input-bordered my-4"
+            placeholder="Email"
           />
 
           <label htmlFor="password">Password</label>
@@ -45,9 +53,12 @@ const Login = () => {
             type="text"
             id="password"
             className="w-full input input-bordered my-4"
+            placeholder="Password"
           />
 
-          <button>Forget password?</button>
+          <label htmlFor="resetPassword-Modal" className="cursor-pointer">
+            Forget password?
+          </label>
           <input
             type="submit"
             value="Login"
@@ -64,6 +75,41 @@ const Login = () => {
           <FcGoogle className="text-2xl mr-2" /> Sign in With Google
         </button>
       </div>
+
+      {isOnModal && (
+        <>
+          <input
+            type="checkbox"
+            id="resetPassword-Modal"
+            className="modal-toggle"
+          />
+          <div className="modal">
+            <div className="modal-box relative">
+              <label
+                htmlFor="resetPassword-Modal"
+                className="btn btn-sm btn-circle absolute right-2 top-2"
+              >
+                ✕
+              </label>
+              <h3 className="text-lg font-bold">Reset your password</h3>
+              <form onSubmit={handleResetPassword}>
+                <input
+                  type="email"
+                  name="email"
+                  className="input input-bordered w-full my-3"
+                  placeholder="Enter your email"
+                  required
+                />
+                <input
+                  type="submit"
+                  value="Reset"
+                  className="btn flex btn-primary mx-auto"
+                />
+              </form>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
