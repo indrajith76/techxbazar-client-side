@@ -37,10 +37,31 @@ const Navbar = () => {
   return (
     <div className="px-4 py-5 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-0">
       <div className="relative flex items-center justify-between">
+        <label
+          htmlFor="my-drawer-2"
+          className="drawer-button lg:hidden"
+        >
+          <svg className="w-5 text-gray-600" viewBox="0 0 24 24">
+              <path
+                fill="currentColor"
+                d="M23,13H1c-0.6,0-1-0.4-1-1s0.4-1,1-1h22c0.6,0,1,0.4,1,1S23.6,13,23,13z"
+              />
+              <path
+                fill="currentColor"
+                d="M23,6H1C0.4,6,0,5.6,0,5s0.4-1,1-1h22c0.6,0,1,0.4,1,1S23.6,6,23,6z"
+              />
+              <path
+                fill="currentColor"
+                d="M23,20H1c-0.6,0-1-0.4-1-1s0.4-1,1-1h22c0.6,0,1,0.4,1,1S23.6,20,23,20z"
+              />
+            </svg>
+        </label>
         <Link to="/" className="inline-flex items-center">
           <img className="w-52" src={logo} alt="" />
         </Link>
-        <ul className="flex items-center hidden space-x-8 lg:flex">{navItems}</ul>
+        <ul className="flex items-center hidden space-x-8 lg:flex">
+          {navItems}
+        </ul>
         <div className="lg:hidden">
           <button
             aria-label="Open Menu"
