@@ -1,9 +1,21 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import logo from "../../asset/logo.png";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthProvider/AuthProvider";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
+  const { user, logOut } = useContext(AuthContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const isDashboardOn = window.location.pathname.includes("/dashboard");
+
+  const handleSignOut = ()=>{
+    logOut()
+    .then(()=>{
+      toast.success('Successfully logged Out.')
+    })
+    .catch(err=>console.error(err))
+  }
 
   const navItems = (
     <>
@@ -23,14 +35,32 @@ const Navbar = () => {
           Dashboard
         </Link>
       </li>
-      <li>
-        <Link
-          to="/login"
-          className="inline-flex items-center justify-center font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-primary hover:bg-orange-500 focus:shadow-outline focus:outline-none btn-sm"
-        >
-          Login
-        </Link>
-      </li>
+      {user && (
+        <>
+          <li>
+            <div className="avatar">
+              <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                <img src={user.photoURL} alt="" />
+              </div>
+            </div>
+          </li>
+          <li>
+            <button onClick={handleSignOut} className="inline-flex items-center justify-center font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-primary hover:bg-orange-500 focus:shadow-outline focus:outline-none btn-sm">
+              LogOut
+            </button>
+          </li>
+        </>
+      )}
+      {!user && (
+        <li>
+          <Link
+            to="/login"
+            className="inline-flex items-center justify-center font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-primary hover:bg-orange-500 focus:shadow-outline focus:outline-none btn-sm"
+          >
+            Login
+          </Link>
+        </li>
+      )}
     </>
   );
 
@@ -38,23 +68,23 @@ const Navbar = () => {
     <div className="px-4 py-5 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-0">
       <div className="relative flex items-center justify-between">
         <label
-          htmlFor="my-drawer-2"
-          className="drawer-button lg:hidden"
+          htmlFor="toggle-dashboard"
+          className={`drawer-button ${!isDashboardOn && "hidden"} lg:hidden`}
         >
           <svg className="w-5 text-gray-600" viewBox="0 0 24 24">
-              <path
-                fill="currentColor"
-                d="M23,13H1c-0.6,0-1-0.4-1-1s0.4-1,1-1h22c0.6,0,1,0.4,1,1S23.6,13,23,13z"
-              />
-              <path
-                fill="currentColor"
-                d="M23,6H1C0.4,6,0,5.6,0,5s0.4-1,1-1h22c0.6,0,1,0.4,1,1S23.6,6,23,6z"
-              />
-              <path
-                fill="currentColor"
-                d="M23,20H1c-0.6,0-1-0.4-1-1s0.4-1,1-1h22c0.6,0,1,0.4,1,1S23.6,20,23,20z"
-              />
-            </svg>
+            <path
+              fill="currentColor"
+              d="M23,13H1c-0.6,0-1-0.4-1-1s0.4-1,1-1h22c0.6,0,1,0.4,1,1S23.6,13,23,13z"
+            />
+            <path
+              fill="currentColor"
+              d="M23,6H1C0.4,6,0,5.6,0,5s0.4-1,1-1h22c0.6,0,1,0.4,1,1S23.6,6,23,6z"
+            />
+            <path
+              fill="currentColor"
+              d="M23,20H1c-0.6,0-1-0.4-1-1s0.4-1,1-1h22c0.6,0,1,0.4,1,1S23.6,20,23,20z"
+            />
+          </svg>
         </label>
         <Link to="/" className="inline-flex items-center">
           <img className="w-52" src={logo} alt="" />

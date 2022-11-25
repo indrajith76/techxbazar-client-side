@@ -35,7 +35,7 @@ const Login = () => {
           <label htmlFor="password">Password</label>
           {errors?.password && (
             <small className="text-red-500 ml-3">
-              * {errors?.password?.message}
+              *{errors?.password?.message}
             </small>
           )}
           <input

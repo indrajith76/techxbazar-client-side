@@ -6,12 +6,12 @@ import { AuthContext } from "../../contexts/AuthProvider/AuthProvider";
 import toast from "react-hot-toast";
 
 const SignUp = () => {
-  const { createUser } = useContext(AuthContext);
+  const { createUser, googleSignIn, updateUserProfile } =
+    useContext(AuthContext);
   const imageHostKey = process.env.REACT_APP_imgbb_key;
   const navigate = useNavigate();
   const {
     register,
-
     handleSubmit,
     formState: { errors },
   } = useForm();
@@ -22,15 +22,39 @@ const SignUp = () => {
       .then((result) => {
         const user = result.user;
         console.log(user);
-        const successToast = toast.loading("Loading... Please wait few seconds");
+        const successToast = toast.loading(
+          "Loading... Please wait few seconds"
+        );
+        saveUser(data, successToast);
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const googleSignHandler = () => {
+    googleSignIn()
+      .then((result) => {
+        const user = result.user;
+        const data = {
+          name: user.displayName,
+          email: user.email,
+          userType: "buyer",
+          image: user.photoURL,
+        };
+        const successToast = toast.loading(
+          "Loading... Please wait few seconds"
+        );
         saveUser(data, successToast);
       })
       .catch((err) => console.error(err));
   };
 
   const saveUser = (data, successToast) => {
-    console.log(data);
-    const image = data.userImg[0];
+    let image;
+    if (data?.userImg) {
+      image = data?.userImg[0];
+    } else {
+      image = data?.image;
+    }
     const formData = new FormData();
     formData.append("image", image);
     const url = `https://api.imgbb.com/1/upload?key=${imageHostKey}`;
@@ -47,6 +71,8 @@ const SignUp = () => {
             typeOfUser: data.userType,
             image: imgData.data.url,
           };
+          
+          updateUserData(user);
 
           fetch("http://localhost:5000/users", {
             method: "POST",
@@ -65,6 +91,16 @@ const SignUp = () => {
             });
         }
       });
+  };
+
+  const updateUserData = (data) => {
+    const profile = {
+      displayName: data.name,
+      photoURL: data.image,
+    };
+    updateUserProfile(profile)
+      .then(() => {})
+      .catch((err) => console.error(err));
   };
 
   return (
@@ -155,7 +191,10 @@ const SignUp = () => {
             Please Login
           </Link>
         </p>
-        <button className="btn btn-outline btn-primary w-full mt-3 mb-5">
+        <button
+          onClick={googleSignHandler}
+          className="btn btn-outline btn-primary w-full mt-3 mb-5"
+        >
           <FcGoogle className="text-2xl mr-2" /> Sign up With Google
         </button>
       </div>

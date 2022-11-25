@@ -24,8 +24,7 @@ const Home = () => {
 
   if (loading) {
     return <Loader></Loader>
-  }
-  console.log(categories);
+  } 
   return (
     <div className="container mx-auto">
       <AutoplaySlider
