@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
+import { AuthContext } from "../../contexts/AuthProvider/AuthProvider";
+import toast from "react-hot-toast";
 
 const Login = () => {
+  const { resetPassword, signIn } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
@@ -12,13 +15,25 @@ const Login = () => {
   const [isOnModal, setIsOnModal] = useState(true);
 
   const handleLogin = (data) => {
-    console.log(data);
+    const email = data.email;
+    const password = data.password;
+    signIn(email, password)
+      .then((result) => {
+        const user = result.user;
+        toast.success(`Login successfully. Congratulations ${user.displayName}.`)
+      })
+      .catch((err) => console.error(err));
   };
 
   const handleResetPassword = (event) => {
     event.preventDefault();
-    console.log(event.target.email.value);
-    setIsOnModal(false);
+    const email = event.target.email.value;
+    resetPassword(email)
+      .then(() => {
+        toast.success("Password reset successfully. Please check your email.");
+        setIsOnModal(false);
+      })
+      .catch((err) => console.error(err));
   };
 
   return (

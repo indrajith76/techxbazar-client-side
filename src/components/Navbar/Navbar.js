@@ -3,19 +3,20 @@ import logo from "../../asset/logo.png";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthProvider/AuthProvider";
 import toast from "react-hot-toast";
+import { NavHashLink } from "react-router-hash-link";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isDashboardOn = window.location.pathname.includes("/dashboard");
 
-  const handleSignOut = ()=>{
+  const handleSignOut = () => {
     logOut()
-    .then(()=>{
-      toast.success('Successfully logged Out.')
-    })
-    .catch(err=>console.error(err))
-  }
+      .then(() => {
+        toast.success("Successfully logged Out.");
+      })
+      .catch((err) => console.error(err));
+  };
 
   const navItems = (
     <>
@@ -28,15 +29,25 @@ const Navbar = () => {
         </Link>
       </li>
       <li>
-        <Link
-          to="/dashboard"
-          className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
-        >
-          Dashboard
-        </Link>
+        <NavHashLink
+          smooth
+          to="#categories"
+          className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400" 
+          >
+          Categories
+        </NavHashLink>
       </li>
       {user && (
         <>
+          <li>
+            <Link
+              to="/dashboard"
+              className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
+            >
+              Dashboard
+            </Link>
+          </li>
+
           <li>
             <div className="avatar">
               <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
@@ -45,7 +56,10 @@ const Navbar = () => {
             </div>
           </li>
           <li>
-            <button onClick={handleSignOut} className="inline-flex items-center justify-center font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-primary hover:bg-orange-500 focus:shadow-outline focus:outline-none btn-sm">
+            <button
+              onClick={handleSignOut}
+              className="inline-flex items-center justify-center font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-primary hover:bg-orange-500 focus:shadow-outline focus:outline-none btn-sm"
+            >
               LogOut
             </button>
           </li>

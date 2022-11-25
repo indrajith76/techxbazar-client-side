@@ -159,7 +159,7 @@ const Home = () => {
         <h2 className="text-4xl">Advertised Items</h2>
         <div className="h-96 border-2 border-red-600"></div>
       </div>
-      <div className="my-20">
+      <div className="my-20" id="categories">
         <h2 className="text-4xl font-semibold mb-10">Product Categories</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mx-5 lg:mx-0">
           {categories.map((category) => (
