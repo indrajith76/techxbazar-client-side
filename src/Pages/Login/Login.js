@@ -5,31 +5,40 @@ import { FcGoogle } from "react-icons/fc";
 import { AuthContext } from "../../contexts/AuthProvider/AuthProvider";
 import toast from "react-hot-toast";
 import { useLocation } from "react-router-dom";
+import useToken from "../../hooks/useToken";
 
 const Login = () => {
-  const { resetPassword, signIn } = useContext(AuthContext);
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const from = location.state.form.pathname;
-
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const { resetPassword, signIn, googleSignIn } =
+    useContext(AuthContext);
+    const [loggedInUserEmail, setLoggedInUserEmail] = useState("");
+    const [token] = useToken(loggedInUserEmail); 
+    
+    const navigate = useNavigate();
+    const location = useLocation();
+
+  const from = location?.state?.form?.pathname || '/';
+
   const [isOnModal, setIsOnModal] = useState(true);
+
+  if (token) {
+    navigate(from, { replace: true });
+  }
 
   const handleLogin = (data) => {
     const email = data.email;
     const password = data.password;
     signIn(email, password)
       .then((result) => {
-        const user = result.user;
+        const user = result.user; 
         toast.success(
           `Login successfully. Congratulations ${user.displayName}.`
         );
-        navigate(from, { replace: true });
+        setLoggedInUserEmail(user.email);
       })
       .catch((err) => console.error(err));
   };
@@ -41,6 +50,33 @@ const Login = () => {
       .then(() => {
         toast.success("Password reset successfully. Please check your email.");
         setIsOnModal(false);
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const googleSignHandler = () => {
+    googleSignIn()
+      .then((result) => {
+        const user = result.user;
+        setLoggedInUserEmail(user.email);
+        const data = {
+          name: user.displayName,
+          email: user.email,
+          userType: "buyer",
+          image: user.photoURL,
+        };
+
+        fetch("http://localhost:5000/users", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+          .then((res) => res.json())
+          .then((data) => { 
+            toast.success("Login successfully.");
+          });
       })
       .catch((err) => console.error(err));
   };
@@ -95,7 +131,10 @@ const Login = () => {
             Create an account
           </Link>
         </p>
-        <button className="btn btn-outline btn-primary w-full mt-3 mb-5">
+        <button
+          onClick={googleSignHandler}
+          className="btn btn-outline btn-primary w-full mt-3 mb-5"
+        >
           <FcGoogle className="text-2xl mr-2" /> Sign in With Google
         </button>
       </div>
