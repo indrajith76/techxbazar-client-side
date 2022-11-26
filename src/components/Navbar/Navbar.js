@@ -3,7 +3,6 @@ import logo from "../../asset/logo.png";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthProvider/AuthProvider";
 import toast from "react-hot-toast";
-import { NavHashLink } from "react-router-hash-link";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
@@ -27,16 +26,7 @@ const Navbar = () => {
         >
           Home
         </Link>
-      </li>
-      <li>
-        <NavHashLink
-          smooth
-          to="/#categories"
-          className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400" 
-          >
-          Categories
-        </NavHashLink>
-      </li>
+      </li> 
       {user && (
         <>
           <li>

@@ -71,7 +71,7 @@ const SignUp = () => {
             typeOfUser: data.userType,
             image: imgData.data.url,
           };
-          
+
           updateUserData(user);
 
           fetch("http://localhost:5000/users", {
@@ -142,6 +142,7 @@ const SignUp = () => {
               className="ml-3"
               id="buyer"
               value="buyer"
+              checked
             />
             <label htmlFor="buyer"> Buyer</label>
             <input

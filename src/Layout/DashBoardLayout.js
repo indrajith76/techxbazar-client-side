@@ -9,12 +9,12 @@ const DashBoardLayout = () => {
         <Navbar></Navbar>
       </div>
 
-      <div className="drawer drawer-mobile">
+      <div className="drawer drawer-mobile lg:container mx-auto lg:max-w-screen-xl">
         <input id="toggle-dashboard" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content">
           <Outlet></Outlet>
         </div>
-        <div className="drawer-side border-r">
+        <div className="drawer-side border border-l-0">
           <label htmlFor="toggle-dashboard" className="drawer-overlay"></label>
           <ul className="menu p-4 w-80 bg-base-100 text-base-content">
             <li>
