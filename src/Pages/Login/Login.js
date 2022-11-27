@@ -62,7 +62,7 @@ const Login = () => {
         const data = {
           name: user.displayName,
           email: user.email,
-          userType: "buyer",
+          typeOfUser: "buyer",
           image: user.photoURL,
         };
 
