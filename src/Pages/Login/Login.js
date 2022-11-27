@@ -40,7 +40,10 @@ const Login = () => {
         );
         setLoggedInUserEmail(user.email);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err)
+        toast.error(err.message.slice(22, err?.message?.length-2))
+    });
   };
 
   const handleResetPassword = (event) => {
@@ -110,7 +113,7 @@ const Login = () => {
             {...register("password", {
               required: "Please fil the password field",
             })}
-            type="text"
+            type="password"
             id="password"
             className="w-full input input-bordered my-4"
             placeholder="Password"

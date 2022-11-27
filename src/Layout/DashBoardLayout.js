@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, Outlet } from "react-router-dom";
+import Loader from "../components/Loader/Loader";
 import Navbar from "../components/Navbar/Navbar";
+import { AuthContext } from "../contexts/AuthProvider/AuthProvider";
+import useAdmin from "../hooks/useAdmin";
 
 const DashBoardLayout = () => {
+  const { user } = useContext(AuthContext);
+  const [isAdmin, isAdminLoading] = useAdmin(user?.email);
+
+  if (isAdminLoading) {
+    return <Loader></Loader>;
+  }
+
   return (
     <div>
       <div className="border-b">
@@ -10,7 +20,11 @@ const DashBoardLayout = () => {
       </div>
 
       <div className="drawer drawer-mobile lg:container mx-auto lg:max-w-screen-xl">
-        <input id="toggle-dashboard" type="checkbox" className="drawer-toggle" />
+        <input
+          id="toggle-dashboard"
+          type="checkbox"
+          className="drawer-toggle"
+        />
         <div className="drawer-content">
           <Outlet></Outlet>
         </div>
@@ -18,29 +32,36 @@ const DashBoardLayout = () => {
           <label htmlFor="toggle-dashboard" className="drawer-overlay"></label>
           <ul className="menu p-4 w-80 bg-base-100 text-base-content">
             <li>
-              <Link to='/dashboard/myorders'>My Orders</Link>
-            </li> 
+              <Link to="/dashboard/myorders">My Orders</Link>
+            </li>
             <li>
-              <Link to='/dashboard/addaproduct'>Add A product</Link>
-            </li> 
+              <Link to="/dashboard/addaproduct">Add A product</Link>
+            </li>
             <li>
-              <Link to='/dashboard/myproducts'>My Products</Link>
-            </li> 
+              <Link to="/dashboard/myproducts">My Products</Link>
+            </li>
             <li>
-              <Link to='/dashboard/mybuyers'>My Buyers</Link>
-            </li> 
-            <li>
-              <Link to='/dashboard/allsellers'>All Sellers</Link>
-            </li> 
-            <li>
-              <Link to='/dashboard/allbuyers'>All Buyers</Link>
-            </li> 
-            <li>
-              <Link to='/dashboard/allusers'>All Users</Link>
-            </li> 
-            <li>
-              <Link to='/dashboard/reportedItems'>Reported Items</Link>
-            </li> 
+              <Link to="/dashboard/mybuyers">My Buyers</Link>
+            </li>
+            {isAdmin && (
+              <>
+                <li>
+                  <Link to="/dashboard/allsellers">All Sellers</Link>
+                </li>
+
+                <li>
+                  <Link to="/dashboard/allbuyers">All Buyers</Link>
+                </li>
+
+                <li>
+                  <Link to="/dashboard/allusers">All Users</Link>
+                </li>
+
+                <li>
+                  <Link to="/dashboard/reportedItems">Reported Items</Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>

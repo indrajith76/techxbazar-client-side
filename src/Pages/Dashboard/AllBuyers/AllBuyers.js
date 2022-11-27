@@ -31,7 +31,7 @@ const AllBuyers = () => {
           </thead>
           <tbody>
             {buyers.map((buyer, idx) => (
-              <tr>
+              <tr key={buyer._id}>
                 <th>{idx + 1}</th>
                 <td>
                   <div className="avatar">
