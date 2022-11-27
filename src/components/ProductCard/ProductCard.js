@@ -7,7 +7,7 @@ const ProductCard = ({ product }) => {
     name,
     image,
     location,
-    discription: description,
+    description,
     category,
     isVerifiedSeller,
     conditionType,
@@ -16,16 +16,14 @@ const ProductCard = ({ product }) => {
     originalPrice,
     resalePrice,
     sellerName,
+    sellerImage,
     yearsOfUse,
   } = product;
 
   return (
     <div className="card bg-base-100 shadow-xl border relative">
       <div className="dropdown dropdown-bottom dropdown-end absolute right-3 top-2">
-        <label
-          tabIndex={0}
-          className="text-xl font-extrabold cursor-pointer"
-        >
+        <label tabIndex={0} className="text-xl font-extrabold cursor-pointer">
           <FaEllipsisH />
         </label>
         <ul
@@ -38,7 +36,7 @@ const ProductCard = ({ product }) => {
         </ul>
       </div>
       <figure>
-        <img src={image} alt="Shoes" />
+        <img className="h-56" src={image} alt="" />
       </figure>
       <div className="p-5">
         <h2 className="card-title" title={name}>
@@ -46,7 +44,7 @@ const ProductCard = ({ product }) => {
         </h2>
         <div className="w-full mt-2">
           <div className="flex justify-between items-center">
-            <p>Posted Date : {dateOfPost}</p>
+            <p>Posted Date : {dateOfPost.slice(0, 10)}</p>
             <p>
               Year Of Use :{" "}
               <span className="badge badge-primary">{yearsOfUse}</span>
@@ -62,7 +60,11 @@ const ProductCard = ({ product }) => {
             </p>
           </div>
           <p>
-            <small>{description}</small>
+            <small>
+              {description.length > 170
+                ? `${description.slice(0, 170)}...`
+                : description}
+            </small>
           </p>
           <div className="flex justify-between text-lg font-bold">
             <p>
@@ -77,7 +79,7 @@ const ProductCard = ({ product }) => {
           <div className="flex gap-4 mt-4 items-center ml-1">
             <div className="avatar">
               <div className="w-10 h-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                <img src="https://placeimg.com/192/192/people" />
+                <img src={sellerImage} />
               </div>
             </div>
             <div>

@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../contexts/AuthProvider/AuthProvider";
 import "./AddAProduct.css";
 
 const AddAProduct = () => {
+  const imageHostKey = process.env.REACT_APP_imgbb_key;
+  const { user } = useContext(AuthContext);
+  const time = new Date();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -10,7 +17,52 @@ const AddAProduct = () => {
   } = useForm();
 
   const handleAddProduct = (data) => {
-    console.log(data);
+    const successToast = toast.loading("Loading... Please wait few seconds");
+    let image = data?.productImg[0];
+    const formData = new FormData();
+    formData.append("image", image);
+    const url = `https://api.imgbb.com/1/upload?key=${imageHostKey}`;
+    fetch(url, {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((imgData) => {
+        if (imgData.success) {
+          const product = {
+            name: data.productName,
+            image: imgData.data.url,
+            location: data.location,
+            description: data.description,
+            category: data.category,
+            conditionType: data.conditionType,
+            dateOfPost: time,
+            mobileNumber: data.mobileNumber,
+            originalPrice: data.originalPrice,
+            resalePrice: data.resalePrice,
+            sellerName: user.displayName,
+            sellerImage: user.photoURL,
+            sellerEmail:user.email,
+            yearsOfUse: data.yearOfUse,
+          };
+
+          fetch("http://localhost:5000/products", {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify(product),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              navigate("/dashboard/myproducts");
+              toast.success("Product Added Successfully.", {
+                id: successToast,
+              });
+            })
+            .catch((err) => console.error(err));
+        }
+      });
   };
 
   return (
@@ -153,7 +205,7 @@ const AddAProduct = () => {
         />
 
         <input
-          {...register("userImg", { required: true })}
+          {...register("productImg", { required: true })}
           type="file"
           className="file-input file-input-primary w-full mb-3"
         />
@@ -176,7 +228,7 @@ const AddAProduct = () => {
 
         <input
           type="submit"
-          value="Sign Up"
+          value="Add Product"
           className="block btn btn-primary mx-auto my-5"
         />
       </form>

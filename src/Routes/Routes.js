@@ -2,8 +2,12 @@ import { createBrowserRouter } from "react-router-dom";
 import DashBoardLayout from "../Layout/DashBoardLayout";
 import Main from "../Layout/Main";
 import AddAProduct from "../Pages/Dashboard/AddAProduct/AddAProduct";
+import AllBuyers from "../Pages/Dashboard/AllBuyers/AllBuyers";
+import AllSellers from "../Pages/Dashboard/AllSellers/AllSellers";
 import Dashboard from "../Pages/Dashboard/Dashboard/Dashboard";
+import MyBuyers from "../Pages/Dashboard/MyBuyers/MyBuyers";
 import MyOrders from "../Pages/Dashboard/MyOrders/MyOrders";
+import MyProducts from "../Pages/Dashboard/MyProducts/MyProducts";
 import Home from "../Pages/Home/Home";
 import Login from "../Pages/Login/Login";
 import Products from "../Pages/Products/Products";
@@ -21,7 +25,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/category/:id",
-        element: <Products />,
+        element: (
+          <PrivateRoute>
+            <Products />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/login",
@@ -40,20 +48,36 @@ const router = createBrowserRouter([
         <DashBoardLayout></DashBoardLayout>
       </PrivateRoute>
     ),
-    children:[
+    children: [
       {
-        path:'/dashboard',
-        element:<Dashboard></Dashboard>
+        path: "/dashboard",
+        element: <Dashboard></Dashboard>,
       },
       {
-        path:'/dashboard/myorders',
-        element:<MyOrders></MyOrders>
+        path: "/dashboard/myorders",
+        element: <MyOrders></MyOrders>,
       },
       {
-        path:'/dashboard/addaproduct',
-        element:<AddAProduct></AddAProduct>
+        path: "/dashboard/addaproduct",
+        element: <AddAProduct></AddAProduct>,
+      },
+      {
+        path: "/dashboard/myproducts",
+        element: <MyProducts></MyProducts>,
+      },
+      {
+        path: "/dashboard/mybuyers",
+        element: <MyBuyers></MyBuyers>,
+      },
+      {
+        path: "/dashboard/allsellers",
+        element:<AllSellers></AllSellers>
+      },
+      {
+        path:'/dashboard/allbuyers',
+        element:<AllBuyers></AllBuyers>
       }
-    ]
+    ],
   },
 ]);
 
