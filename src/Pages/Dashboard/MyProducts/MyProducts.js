@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AuthContext } from "../../../contexts/AuthProvider/AuthProvider";
 import Loader from "../../../components/Loader/Loader";
-import './MyProducts.css'
+import "./MyProducts.css";
 
 const MyProducts = () => {
   const { user } = useContext(AuthContext);
@@ -10,7 +10,12 @@ const MyProducts = () => {
     queryKey: ["myProducts"],
     queryFn: async () => {
       const res = await fetch(
-        `http://localhost:5000/myProducts?email=${user.email}`
+        `http://localhost:5000/myProducts?email=${user.email}`,
+        {
+          headers: {
+            authorization: `bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
       );
       const data = await res.json();
       return data;

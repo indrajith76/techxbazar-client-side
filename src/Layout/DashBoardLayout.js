@@ -4,12 +4,16 @@ import Loader from "../components/Loader/Loader";
 import Navbar from "../components/Navbar/Navbar";
 import { AuthContext } from "../contexts/AuthProvider/AuthProvider";
 import useAdmin from "../hooks/useAdmin";
+import useBuyer from "../hooks/useBuyer";
+import useSeller from "../hooks/useSeller";
 
 const DashBoardLayout = () => {
   const { user } = useContext(AuthContext);
   const [isAdmin, isAdminLoading] = useAdmin(user?.email);
+  const [isSeller, isSellerLoading] = useSeller(user?.email);
+  const [isBuyer, isBuyerLoading] = useBuyer(user?.email);
 
-  if (isAdminLoading) {
+  if (isAdminLoading || isSellerLoading || isBuyerLoading) {
     return <Loader></Loader>;
   }
 
@@ -31,18 +35,24 @@ const DashBoardLayout = () => {
         <div className="drawer-side border border-l-0">
           <label htmlFor="toggle-dashboard" className="drawer-overlay"></label>
           <ul className="menu p-4 w-80 bg-base-100 text-base-content">
-            <li>
-              <Link to="/dashboard/myorders">My Orders</Link>
-            </li>
-            <li>
-              <Link to="/dashboard/addaproduct">Add A product</Link>
-            </li>
-            <li>
-              <Link to="/dashboard/myproducts">My Products</Link>
-            </li>
-            <li>
-              <Link to="/dashboard/mybuyers">My Buyers</Link>
-            </li>
+            {isBuyer && (
+              <li>
+                <Link to="/dashboard/myorders">My Orders</Link>
+              </li>
+            )}
+            {isSeller && (
+              <>
+                <li>
+                  <Link to="/dashboard/addaproduct">Add A product</Link>
+                </li>
+                <li>
+                  <Link to="/dashboard/myproducts">My Products</Link>
+                </li>
+                <li>
+                  <Link to="/dashboard/mybuyers">My Buyers</Link>
+                </li>
+              </>
+            )}
             {isAdmin && (
               <>
                 <li>
