@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaEllipsisH, FaCheckCircle } from "react-icons/fa";
+import BookingModal from "./BookingModal";
 
 const ProductCard = ({ product }) => {
   const {
@@ -19,6 +20,7 @@ const ProductCard = ({ product }) => {
     sellerImage,
     yearsOfUse,
   } = product;
+  const [isModalOn, setIsModalOn] = useState(true);
 
   return (
     <div className="card bg-base-100 shadow-xl border relative">
@@ -79,7 +81,7 @@ const ProductCard = ({ product }) => {
           <div className="flex gap-4 mt-4 items-center ml-1">
             <div className="avatar">
               <div className="w-10 h-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                <img src={sellerImage} />
+                <img src={sellerImage} alt='' />
               </div>
             </div>
             <div>
@@ -94,9 +96,20 @@ const ProductCard = ({ product }) => {
               <p className="font-semibold">Mobile : {mobileNumber}</p>
             </div>
           </div>
-          <button className="btn btn-primary mt-3 w-full">Book Now</button>
+          <label
+            htmlFor="booking-modal"
+            className="btn btn-primary mt-3 w-full"
+          >
+            Book Now
+          </label>
         </div>
       </div>
+      {isModalOn && (
+        <BookingModal
+          product={product}
+          setIsModalOn={setIsModalOn}
+        ></BookingModal>
+      )}
     </div>
   );
 };

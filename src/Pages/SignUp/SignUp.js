@@ -7,13 +7,14 @@ import toast from "react-hot-toast";
 import useToken from "../../hooks/useToken";
 
 const SignUp = () => {
-  const { createUser, googleSignIn, updateUserProfile } =
+  const { createUser, googleSignIn, updateUserProfile, logOut } =
     useContext(AuthContext);
   const imageHostKey = process.env.REACT_APP_imgbb_key;
   const navigate = useNavigate();
   const location = useLocation();
   const [createdUserEmail, setCreatedUserEmail] = useState("");
   const [token] = useToken(createdUserEmail);
+  const [profilePhoto, setProfilePhoto] = useState("");
 
   const from = location?.state?.form?.pathname || "/";
 
@@ -30,15 +31,57 @@ const SignUp = () => {
   const handleSignUp = (data) => {
     // const { email, name, password, userType, userImg } = data;
     createUser(data.email, data.password)
-      .then((result) => {
-        const user = result.user;
-        console.log(user);
+      .then((result) => { 
         const successToast = toast.loading(
           "Loading... Please wait few seconds"
-        );
-        saveUser(data, successToast);
+        ); 
+        const image = data?.userImg[0];;
+        const formData = new FormData();
+        formData.append("image", image);
+        const url = `https://api.imgbb.com/1/upload?key=${imageHostKey}`;
+        fetch(url, {
+          method: "POST",
+          body: formData,
+        })
+          .then((res) => res.json())
+          .then((imgData) => {
+            if (imgData.success) {
+              const user = {
+                name: data.name,
+                email: data.email,
+                typeOfUser: data.userType,
+                image: imgData.data.url,
+              };
+
+              setProfilePhoto(user.image);
+              updateUserData(user);
+
+              fetch("http://localhost:5000/users", {
+                method: "POST",
+                headers: {
+                  "content-type": "application/json",
+                },
+                body: JSON.stringify(user),
+              })
+                .then((res) => res.json())
+                .then((data) => {
+                  if (data.acknowledged) {
+                    setCreatedUserEmail(user.email);
+                    toast.success("Account created successfully.", {
+                      id: successToast,
+                    });
+                    logOut()
+                    .then(()=>{})
+                    .catch(()=>{})
+                  }
+                });
+            }
+          });
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+        toast.error(err.message.slice(22, err.message.length - 2));
+      });
   };
 
   const googleSignHandler = () => {
@@ -53,57 +96,98 @@ const SignUp = () => {
         };
         const successToast = toast.loading(
           "Loading... Please wait few seconds"
-        );
-        saveUser(data, successToast);
+        ); 
+        const image = data?.image;
+        const formData = new FormData();
+        formData.append("image", image);
+        const url = `https://api.imgbb.com/1/upload?key=${imageHostKey}`;
+        fetch(url, {
+          method: "POST",
+          body: formData,
+        })
+          .then((res) => res.json())
+          .then((imgData) => {
+            if (imgData.success) {
+              const user = {
+                name: data.name,
+                email: data.email,
+                typeOfUser: data.userType,
+                image: imgData.data.url,
+              };
+
+              setProfilePhoto(user.image);
+              updateUserData(user);
+
+              fetch("http://localhost:5000/users", {
+                method: "POST",
+                headers: {
+                  "content-type": "application/json",
+                },
+                body: JSON.stringify(user),
+              })
+                .then((res) => res.json())
+                .then((data) => { 
+                  setCreatedUserEmail(user.email);
+                  toast.success("Account created successfully.", {
+                    id: successToast,
+                  });
+                });
+            }
+          });
         setCreatedUserEmail(user.email);
       })
-      .catch((err) => console.error(err));
-  };
-
-  const saveUser = (data, successToast) => {
-    let image;
-    if (data?.userImg) {
-      image = data?.userImg[0];
-    } else {
-      image = data?.image;
-    }
-    const formData = new FormData();
-    formData.append("image", image);
-    const url = `https://api.imgbb.com/1/upload?key=${imageHostKey}`;
-    fetch(url, {
-      method: "POST",
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then((imgData) => {
-        if (imgData.success) {
-          const user = {
-            name: data.name,
-            email: data.email,
-            typeOfUser: data.userType,
-            image: imgData.data.url,
-          };
-
-          updateUserData(user);
-
-          fetch("http://localhost:5000/users", {
-            method: "POST",
-            headers: {
-              "content-type": "application/json",
-            },
-            body: JSON.stringify(user),
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              setCreatedUserEmail(user.email);
-              navigate("/");
-              toast.success("Account created successfully.", {
-                id: successToast,
-              });
-            });
-        }
+      .catch((err) => {
+        console.error(err);
+        toast.error(err.message.slice(22, err.message.length - 2));
       });
   };
+
+  // const saveUser = (data, successToast) => {
+  //   let image;
+  //   if (data?.userImg) {
+  //     image = data?.userImg[0];
+  //   } else {
+  //     image = data?.image;
+  //   }
+  //   const formData = new FormData();
+  //   formData.append("image", image);
+  //   const url = `https://api.imgbb.com/1/upload?key=${imageHostKey}`;
+  //   fetch(url, {
+  //     method: "POST",
+  //     body: formData,
+  //   })
+  //     .then((res) => res.json())
+  //     .then((imgData) => {
+  //       if (imgData.success) {
+  //         const user = {
+  //           name: data.name,
+  //           email: data.email,
+  //           typeOfUser: data.userType,
+  //           image: imgData.data.url,
+  //         };
+
+  //         setProfilePhoto(user.image);
+  //         updateUserData(user);
+
+  //         fetch("http://localhost:5000/users", {
+  //           method: "POST",
+  //           headers: {
+  //             "content-type": "application/json",
+  //           },
+  //           body: JSON.stringify(user),
+  //         })
+  //           .then((res) => res.json())
+  //           .then((data) => {
+  //             if (data.acknowledged) {
+  //               setCreatedUserEmail(user.email);
+  //               toast.success("Account created successfully.", {
+  //                 id: successToast,
+  //               });
+  //             }
+  //           });
+  //       }
+  //     });
+  // };
 
   const updateUserData = (data) => {
     const profile = {

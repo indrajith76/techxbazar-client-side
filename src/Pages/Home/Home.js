@@ -5,9 +5,11 @@ import withAutoplay from "react-awesome-slider/dist/autoplay";
 import "react-awesome-slider/dist/styles.css";
 import "./Home.css";
 import axios from "axios";
+import ProductCard from "../../components/ProductCard/ProductCard";
 
 import { FaArrowRight } from "react-icons/fa";
 import Loader from "../../components/Loader/Loader";
+import { useQuery } from "@tanstack/react-query";
 
 const AutoplaySlider = withAutoplay(AwesomeSlider);
 
@@ -22,9 +24,19 @@ const Home = () => {
     setLoading(false);
   }, []);
 
-  if (loading) {
-    return <Loader></Loader>
-  } 
+  const { data: advertiseItems, isLoading } = useQuery({
+    queryKey: ["advertiseProducts"],
+    queryFn: async () => {
+      const res = await fetch("http://localhost:5000/advertiseProducts");
+      const data = await res.json();
+      return data;
+    },
+  }); 
+
+  if (loading || isLoading) {
+    return <Loader></Loader>;
+  }
+  
   return (
     <div className="container mx-auto">
       <AutoplaySlider
@@ -155,10 +167,19 @@ const Home = () => {
           </div>
         </div>
       </AutoplaySlider>
-      <div className="my-20">
-        <h2 className="text-4xl">Advertised Items</h2>
-        <div className="h-96 border-2 border-red-600"></div>
-      </div>
+      {advertiseItems.length > 0 && (
+        <div className="my-20">
+          <h2 className="text-4xl mb-10">Advertised Items</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {advertiseItems.map((advertiseItem) => (
+              <ProductCard
+                key={advertiseItem?._id}
+                product={advertiseItem}
+              ></ProductCard>
+            ))}
+          </div>
+        </div>
+      )}
       <div className="my-20" id="categories">
         <h2 className="text-4xl font-semibold mb-10">Product Categories</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mx-5 lg:mx-0">
@@ -166,7 +187,11 @@ const Home = () => {
             <Link to={`/category/${category._id}`} key={category._id}>
               <div className="border shadow-lg flex justify-center flex-col rounded-xl overflow-hidden p-5">
                 <div className="flex justify-center h-64">
-                  <img className="w-64 hover:w-72 duration-500" src={category.image} alt="" />
+                  <img
+                    className="w-64 hover:w-72 duration-500"
+                    src={category.image}
+                    alt=""
+                  />
                 </div>
                 <div className="flex items-center justify-between">
                   <h4 className="text-3xl">{category.name}</h4>
