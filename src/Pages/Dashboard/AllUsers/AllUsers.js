@@ -1,9 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
+import toast from "react-hot-toast";
 import Loader from "../../../components/Loader/Loader";
 
 const AllUsers = () => {
-  const { data: allUsers, isLoading } = useQuery({
+  const {
+    data: allUsers,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["allUsers"],
     queryFn: async () => {
       const res = await fetch("http://localhost:5000/allUsers");
@@ -11,6 +16,34 @@ const AllUsers = () => {
       return data;
     },
   });
+
+  const makeAdminHandler = (email, name) => {
+    fetch(`http://localhost:5000/makeAdmin?email=${email}`, {
+      method: "PUT",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        toast.success(`${name} is now Admin`);
+        refetch();
+      });
+  };
+
+  const deleteUser = (email, name) => {
+    const confirm = window.confirm(`Are you sure to delete ${name} account.`);
+    if (confirm) {
+        console.log(email)
+      fetch(`http://localhost:5000/deleteUser?email=${email}`, {
+        method: "DELETE",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.deletedCount > 0) {
+            toast.success(`${name} account deleted successfully.`);
+            refetch();
+          }
+        });
+    }
+  };
 
   if (isLoading) {
     return <Loader></Loader>;
@@ -66,11 +99,21 @@ const AllUsers = () => {
                     {user?.typeOfUser === "admin" ? (
                       ""
                     ) : (
-                      <button className="btn btn-info btn-sm text-white">
+                      <button
+                        onClick={() =>
+                          makeAdminHandler(user?.email, user?.name)
+                        }
+                        className="btn btn-info btn-sm text-white"
+                      >
                         Make Admin
                       </button>
                     )}
-                    <button className="btn btn-error btn-sm">Delete</button>
+                    <button
+                      onClick={() => deleteUser(user?.email, user?.name)}
+                      className="btn btn-error btn-sm"
+                    >
+                      Delete
+                    </button>
                   </div>
                 </td>
               </tr>

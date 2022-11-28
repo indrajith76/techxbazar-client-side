@@ -1,9 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
+import toast from "react-hot-toast";
 import Loader from "../../../components/Loader/Loader";
 
 const AllBuyers = () => {
-  const { data: buyers, isLoading } = useQuery({
+  const {
+    data: buyers,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["allBuyers"],
     queryFn: async () => {
       const res = await fetch("http://localhost:5000/allBuyers");
@@ -12,9 +17,26 @@ const AllBuyers = () => {
     },
   });
 
+  const handleDeleteBuyers = (email) => {
+    const confirm = window.confirm("Are you want to delete?");
+    if (confirm) {
+      fetch(`http://localhost:5000/allBuyers?email=${email}`, {
+        method: "DELETE",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.deletedCount > 0) {
+            toast.success(`Successfully Deleted Seller ${email}`);
+            refetch();
+          }
+        });
+    }
+  };
+
   if (isLoading) {
     return <Loader></Loader>;
   }
+
   return (
     <div className="my-5 ml-5">
       <h2 className="text-3xl mb-3">All Buyers</h2>
@@ -43,7 +65,12 @@ const AllBuyers = () => {
                 <td>{buyer.name}</td>
                 <td>{buyer.email}</td>
                 <td>
-                    <button className="btn btn-sm btn-error">Delete</button>
+                  <button
+                    onClick={() => handleDeleteBuyers(buyer.email)}
+                    className="btn btn-sm btn-error"
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}

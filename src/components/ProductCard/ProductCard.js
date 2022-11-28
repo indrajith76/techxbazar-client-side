@@ -9,7 +9,7 @@ const ProductCard = ({ product }) => {
     location,
     description,
     category,
-    isVerifiedSeller,
+    isVerified,
     conditionType,
     dateOfPost,
     mobileNumber,
@@ -85,7 +85,7 @@ const ProductCard = ({ product }) => {
             <div>
               <p className="flex items-center gap-1">
                 {sellerName}{" "}
-                {isVerifiedSeller && (
+                {isVerified && (
                   <p className="text-blue-500">
                     <FaCheckCircle />
                   </p>

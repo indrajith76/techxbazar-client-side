@@ -1,22 +1,33 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { AuthContext } from "../../contexts/AuthProvider/AuthProvider";
 import toast from "react-hot-toast";
+import useToken from "../../hooks/useToken";
 
 const SignUp = () => {
   const { createUser, googleSignIn, updateUserProfile } =
     useContext(AuthContext);
   const imageHostKey = process.env.REACT_APP_imgbb_key;
   const navigate = useNavigate();
+  const location = useLocation();
+  const [createdUserEmail, setCreatedUserEmail] = useState("");
+  const [token] = useToken(createdUserEmail);
+
+  const from = location?.state?.form?.pathname || "/";
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const handleLogin = (data) => {
+  if (token) {
+    navigate(from, { replace: true });
+  }
+
+  const handleSignUp = (data) => {
     // const { email, name, password, userType, userImg } = data;
     createUser(data.email, data.password)
       .then((result) => {
@@ -44,6 +55,7 @@ const SignUp = () => {
           "Loading... Please wait few seconds"
         );
         saveUser(data, successToast);
+        setCreatedUserEmail(user.email);
       })
       .catch((err) => console.error(err));
   };
@@ -83,7 +95,7 @@ const SignUp = () => {
           })
             .then((res) => res.json())
             .then((data) => {
-              // setCreatedUserEmail(email);
+              setCreatedUserEmail(user.email);
               navigate("/");
               toast.success("Account created successfully.", {
                 id: successToast,
@@ -107,7 +119,7 @@ const SignUp = () => {
     <div>
       <div className="border w-96 mx-auto p-5 my-16 rounded-lg">
         <h2 className="text-3xl text-center mb-7 mt-2">Sign Up</h2>
-        <form onSubmit={handleSubmit(handleLogin)}>
+        <form onSubmit={handleSubmit(handleSignUp)}>
           <label htmlFor="name">Name</label>
           {errors?.name && (
             <small className="text-red-500 ml-3">

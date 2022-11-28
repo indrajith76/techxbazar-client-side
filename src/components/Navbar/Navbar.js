@@ -13,6 +13,7 @@ const Navbar = () => {
     logOut()
       .then(() => {
         toast.success("Successfully logged Out.");
+      localStorage.removeItem('techxBazarToken')
       })
       .catch((err) => console.error(err));
   };
@@ -25,6 +26,14 @@ const Navbar = () => {
           className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
         >
           Home
+        </Link>
+      </li> 
+      <li>
+        <Link
+          to="/blogs"
+          className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
+        >
+          Blogs
         </Link>
       </li> 
       {user && (
@@ -65,6 +74,7 @@ const Navbar = () => {
           </Link>
         </li>
       )}
+      
     </>
   );
 
