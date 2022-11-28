@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import toast from "react-hot-toast";
+import { AuthContext } from "../../contexts/AuthProvider/AuthProvider";
 
 const BookingModal = ({ product, setIsModalOn }) => {
+  const { user } = useContext(AuthContext);
   const { _id, name, resalePrice, sellerEmail } = product;
 
   const addBookingHandler = (event) => {
@@ -14,6 +16,7 @@ const BookingModal = ({ product, setIsModalOn }) => {
       price: form.price.value,
       sellerMobileNumber: form.phoneNumber.value,
       sellerLocation: form.location.value,
+      buyerEmail: user.email,
     };
 
     fetch("http://localhost:5000/myOrders", {
@@ -91,6 +94,7 @@ const BookingModal = ({ product, setIsModalOn }) => {
               type="submit"
               value="Add To Book"
               className="block btn btn-primary mx-auto my-3"
+              disabled={!user && true}
             />
           </form>
         </div>

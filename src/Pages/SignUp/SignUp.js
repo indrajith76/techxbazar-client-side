@@ -255,7 +255,7 @@ const SignUp = () => {
           <input
             {...register("userImg", { required: true })}
             type="file"
-            className="file-input file-input-primary"
+            className="file-input file-input-primary w-full"
           />
 
           <label htmlFor="password">Password</label>
