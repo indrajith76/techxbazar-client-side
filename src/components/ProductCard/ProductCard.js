@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaEllipsisH, FaCheckCircle } from "react-icons/fa";
 import BookingModal from "./BookingModal";
+import ReportModal from "./ReportModal";
 
 const ProductCard = ({ product }) => {
   const {
@@ -34,7 +35,7 @@ const ProductCard = ({ product }) => {
           className="dropdown-content menu p-2 shadow bg-base-100 border rounded-box w-52"
         >
           <li>
-            <button className="">Report Product</button>
+            <label htmlFor="report-modal">Report Product</label>
           </li>
         </ul>
       </div>
@@ -97,14 +98,26 @@ const ProductCard = ({ product }) => {
               <p className="font-semibold">Mobile : {mobileNumber}</p>
             </div>
           </div>
-          {isSold ? <span className="btn text-xl btn-disabled mt-3 w-full">Sold</span> : <label
-            htmlFor="booking-modal"
-            className="btn btn-primary mt-3 w-full"
-          >
-            Book Now
-          </label>}
+          {isSold ? (
+            <span className="btn text-xl btn-disabled mt-3 w-full">
+              Not Available
+            </span>
+          ) : (
+            <label
+              htmlFor="booking-modal"
+              className="btn btn-primary mt-3 w-full"
+            >
+              Book Now
+            </label>
+          )}
         </div>
       </div>
+      {isModalOn && (
+        <ReportModal
+          product={product}
+          setIsModalOn={setIsModalOn}
+        ></ReportModal>
+      )}
       {isModalOn && (
         <BookingModal
           product={product}

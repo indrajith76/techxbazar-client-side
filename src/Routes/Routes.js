@@ -15,6 +15,7 @@ import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 import Home from "../Pages/Home/Home";
 import Login from "../Pages/Login/Login";
 import Products from "../Pages/Products/Products";
+import ReportedItems from "../Pages/ReportedItems/ReportedItems";
 import SignUp from "../Pages/SignUp/SignUp";
 import AdminRoute from "./AdminRoute/AdminRoute";
 import BuyerRoute from "./BuyerRoute/BuyerRoute";
@@ -119,6 +120,14 @@ const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <AllUsers></AllUsers>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "/dashboard/reportedItems",
+        element: (
+          <AdminRoute>
+            <ReportedItems></ReportedItems>
           </AdminRoute>
         ),
       },
