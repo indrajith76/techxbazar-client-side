@@ -1,6 +1,6 @@
 # Project Name : TechXBazar - A Laptop Reseller market
 
-## Live Website Link - https://maya-kitchen-corner.web.app/
+## Live Website Link - https://techxbazar.web.app/
 
 ### This is a reseller market website. Where anyone can find their budget friendly laptop.
 
