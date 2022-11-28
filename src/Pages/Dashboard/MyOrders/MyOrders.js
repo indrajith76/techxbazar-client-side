@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 import Loader from "../../../components/Loader/Loader";
 import { AuthContext } from "../../../contexts/AuthProvider/AuthProvider";
 
@@ -45,7 +46,7 @@ const MyOrders = () => {
               </thead>
               <tbody>
                 {myOrders.map((order) => (
-                  <tr>
+                  <tr key={order._id}>
                     <th>1</th>
                     <td>
                       <div className="w-56 overflow-scroll">
@@ -56,7 +57,23 @@ const MyOrders = () => {
                     <td>${order.price}</td>
                     <td>
                       <div className="flex justify-end gap-5">
-                        <button className="btn btn-sm btn-info text-white">Pay</button>
+                        <div>
+                          {order.price && !order.paid && (
+                            <Link
+                              to={`/dashboard/payment/${order._id}`}
+                              className="btn btn-sm btn-info text-white"
+                            >
+                              Pay
+                            </Link>
+                          )}
+                          {order.price && order.paid && (
+                            <span className="badge badge-outline badge-success font-semibold">
+                              {user.email === order.buyerEmail
+                                ? "Paid"
+                                : "Sold"}
+                            </span>
+                          )}
+                        </div>
                         <button className="btn btn-sm btn-error">Delete</button>
                       </div>
                     </td>

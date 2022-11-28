@@ -1,6 +1,6 @@
 import React from 'react';
 import Lottie from "lottie-react";
-import errorImg from '../../assets/error-img.json'
+import errorImg from '../../asset/error-img.json'
 
 const ErrorPage = () => {
     return (

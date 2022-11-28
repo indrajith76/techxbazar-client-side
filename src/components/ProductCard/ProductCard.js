@@ -19,6 +19,7 @@ const ProductCard = ({ product }) => {
     sellerName,
     sellerImage,
     yearsOfUse,
+    isSold,
   } = product;
   const [isModalOn, setIsModalOn] = useState(true);
 
@@ -81,7 +82,7 @@ const ProductCard = ({ product }) => {
           <div className="flex gap-4 mt-4 items-center ml-1">
             <div className="avatar">
               <div className="w-10 h-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                <img src={sellerImage} alt='' />
+                <img src={sellerImage} alt="" />
               </div>
             </div>
             <div>
@@ -96,12 +97,12 @@ const ProductCard = ({ product }) => {
               <p className="font-semibold">Mobile : {mobileNumber}</p>
             </div>
           </div>
-          <label
+          {isSold ? <span className="btn text-xl btn-disabled mt-3 w-full">Sold</span> : <label
             htmlFor="booking-modal"
             className="btn btn-primary mt-3 w-full"
           >
             Book Now
-          </label>
+          </label>}
         </div>
       </div>
       {isModalOn && (
