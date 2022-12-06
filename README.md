@@ -5,7 +5,9 @@
 ### This is a reseller market website. Where anyone can find their budget friendly laptop.
 
 ## In this Project I used :
-
+- ReactJs
+- useQuery
+- stripe Payment gatway
 - Tailwind CSS.
 - React Awesome slider
 - React icons
