@@ -50,15 +50,6 @@ const Home = () => {
     },
   });
 
-  // useEffect(() => {
-  //   axios
-  //     .get("https://techxbazar-server-side.vercel.app/latestProducts")
-  //     .then((data) => {
-  //       setLatestProducts(data.data);
-  //     });
-  //   setLoading(false);
-  // }, []);
-
   const clients = [
     "https://i.ibb.co/DpfWtZB/444.png",
     "https://i.ibb.co/DLZP8FB/333.png",
