@@ -11,19 +11,24 @@ const AllSellers = () => {
   } = useQuery({
     queryKey: ["allSellers"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:5000/allSellers");
+      const res = await fetch(
+        "https://techxbazar-server-side.vercel.app/allSellers"
+      );
       const data = await res.json();
       return data;
     },
   });
 
   const handleVerify = (email, name) => {
-    fetch(`http://localhost:5000/verifySeller?email=${email}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-      },
-    })
+    fetch(
+      `https://techxbazar-server-side.vercel.app/verifySeller?email=${email}`,
+      {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         if (data.modifiedCount > 0) {
@@ -36,9 +41,12 @@ const AllSellers = () => {
   const handleDeleteSeller = (email, name) => {
     const confirm = window.confirm(`Are sure to delete seller ${name}?`);
     if (confirm) {
-      fetch(`http://localhost:5000/deleteSeller?email=${email}`, {
-        method: "DELETE",
-      })
+      fetch(
+        `https://techxbazar-server-side.vercel.app/deleteSeller?email=${email}`,
+        {
+          method: "DELETE",
+        }
+      )
         .then((res) => res.json())
         .then((data) => {
           if (data.deletedCount > 0) {

@@ -2,6 +2,10 @@
 
 ## Live Website Link - https://techxbazar.web.app/
 
+> Admin email and password:
+> email - admin@techxbazar.com
+> pass - admin1234
+
 ### This is a reseller market website. Where anyone can find their budget friendly laptop.
 
 ## In this Project I used :

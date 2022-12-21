@@ -15,7 +15,7 @@ const MyProducts = () => {
     queryKey: ["myProducts"],
     queryFn: async () => {
       const res = await fetch(
-        `http://localhost:5000/myProducts?email=${user.email}`,
+        `https://techxbazar-server-side.vercel.app/myProducts?email=${user.email}`,
         {
           headers: {
             authorization: `bearer ${localStorage.getItem("accessToken")}`,
@@ -30,7 +30,7 @@ const MyProducts = () => {
   const deleteHandler = (id) => {
     const confirm = window.confirm("Are you want to delete?");
     if (confirm) {
-      fetch(`http://localhost:5000/myProducts?id=${id}`, {
+      fetch(`https://techxbazar-server-side.vercel.app/myProducts?id=${id}`, {
         method: "DELETE",
       })
         .then((res) => res.json())
@@ -44,7 +44,7 @@ const MyProducts = () => {
   };
 
   const addAdvertiseHandler = (id) => {
-    fetch(`http://localhost:5000/myProducts?id=${id}`, {
+    fetch(`https://techxbazar-server-side.vercel.app/myProducts?id=${id}`, {
       method: "PUT",
     })
       .then((res) => res.json())

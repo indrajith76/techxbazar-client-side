@@ -11,7 +11,9 @@ const AllBuyers = () => {
   } = useQuery({
     queryKey: ["allBuyers"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:5000/allBuyers");
+      const res = await fetch(
+        "https://techxbazar-server-side.vercel.app/allBuyers"
+      );
       const data = await res.json();
       return data;
     },
@@ -20,9 +22,12 @@ const AllBuyers = () => {
   const handleDeleteBuyers = (email) => {
     const confirm = window.confirm("Are you want to delete?");
     if (confirm) {
-      fetch(`http://localhost:5000/allBuyers?email=${email}`, {
-        method: "DELETE",
-      })
+      fetch(
+        `https://techxbazar-server-side.vercel.app/allBuyers?email=${email}`,
+        {
+          method: "DELETE",
+        }
+      )
         .then((res) => res.json())
         .then((data) => {
           if (data.deletedCount > 0) {

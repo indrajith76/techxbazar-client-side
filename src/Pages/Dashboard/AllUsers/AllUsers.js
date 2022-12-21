@@ -11,16 +11,21 @@ const AllUsers = () => {
   } = useQuery({
     queryKey: ["allUsers"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:5000/allUsers");
+      const res = await fetch(
+        "https://techxbazar-server-side.vercel.app/allUsers"
+      );
       const data = await res.json();
       return data;
     },
   });
 
   const makeAdminHandler = (email, name) => {
-    fetch(`http://localhost:5000/makeAdmin?email=${email}`, {
-      method: "PUT",
-    })
+    fetch(
+      `https://techxbazar-server-side.vercel.app/makeAdmin?email=${email}`,
+      {
+        method: "PUT",
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         toast.success(`${name} is now Admin`);
@@ -31,10 +36,13 @@ const AllUsers = () => {
   const deleteUser = (email, name) => {
     const confirm = window.confirm(`Are you sure to delete ${name} account.`);
     if (confirm) {
-        console.log(email)
-      fetch(`http://localhost:5000/deleteUser?email=${email}`, {
-        method: "DELETE",
-      })
+      console.log(email);
+      fetch(
+        `https://techxbazar-server-side.vercel.app/deleteUser?email=${email}`,
+        {
+          method: "DELETE",
+        }
+      )
         .then((res) => res.json())
         .then((data) => {
           if (data.deletedCount > 0) {

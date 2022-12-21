@@ -31,11 +31,11 @@ const SignUp = () => {
   const handleSignUp = (data) => {
     // const { email, name, password, userType, userImg } = data;
     createUser(data.email, data.password)
-      .then((result) => { 
+      .then((result) => {
         const successToast = toast.loading(
           "Loading... Please wait few seconds"
-        ); 
-        const image = data?.userImg[0];;
+        );
+        const image = data?.userImg[0];
         const formData = new FormData();
         formData.append("image", image);
         const url = `https://api.imgbb.com/1/upload?key=${imageHostKey}`;
@@ -56,7 +56,7 @@ const SignUp = () => {
               setProfilePhoto(user.image);
               updateUserData(user);
 
-              fetch("http://localhost:5000/users", {
+              fetch("https://techxbazar-server-side.vercel.app/users", {
                 method: "POST",
                 headers: {
                   "content-type": "application/json",
@@ -71,8 +71,8 @@ const SignUp = () => {
                       id: successToast,
                     });
                     logOut()
-                    .then(()=>{})
-                    .catch(()=>{})
+                      .then(() => {})
+                      .catch(() => {});
                   }
                 });
             }
@@ -96,7 +96,7 @@ const SignUp = () => {
         };
         const successToast = toast.loading(
           "Loading... Please wait few seconds"
-        ); 
+        );
         const image = data?.image;
         const formData = new FormData();
         formData.append("image", image);
@@ -118,7 +118,7 @@ const SignUp = () => {
               setProfilePhoto(user.image);
               updateUserData(user);
 
-              fetch("http://localhost:5000/users", {
+              fetch("https://techxbazar-server-side.vercel.app/users", {
                 method: "POST",
                 headers: {
                   "content-type": "application/json",
@@ -126,7 +126,7 @@ const SignUp = () => {
                 body: JSON.stringify(user),
               })
                 .then((res) => res.json())
-                .then((data) => { 
+                .then((data) => {
                   setCreatedUserEmail(user.email);
                   toast.success("Account created successfully.", {
                     id: successToast,
@@ -169,7 +169,7 @@ const SignUp = () => {
   //         setProfilePhoto(user.image);
   //         updateUserData(user);
 
-  //         fetch("http://localhost:5000/users", {
+  //         fetch("https://techxbazar-server-side.vercel.app/users", {
   //           method: "POST",
   //           headers: {
   //             "content-type": "application/json",

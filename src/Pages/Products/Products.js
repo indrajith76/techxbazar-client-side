@@ -9,7 +9,9 @@ const Products = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["category"],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:5000/category/${categoryId}`);
+      const res = await fetch(
+        `https://techxbazar-server-side.vercel.app/category/${categoryId}`
+      );
       const data = await res.json();
       return data;
     },

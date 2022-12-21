@@ -139,7 +139,9 @@ const router = createBrowserRouter([
           </BuyerRoute>
         ),
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/myOrders/${params.id}`),
+          fetch(
+            `https://techxbazar-server-side.vercel.app/myOrders/${params.id}`
+          ),
       },
     ],
   },

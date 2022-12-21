@@ -12,7 +12,7 @@ const ReportModal = ({ product, setIsModalOn }) => {
       sellerEmail,
       reportText: form.report.value,
     };
-    fetch("http://localhost:5000/reports", {
+    fetch("https://techxbazar-server-side.vercel.app/reports", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(reportDoc),

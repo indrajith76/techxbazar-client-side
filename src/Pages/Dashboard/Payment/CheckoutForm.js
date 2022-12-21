@@ -23,7 +23,7 @@ const CheckoutForm = ({ order }) => {
   const elements = useElements();
 
   useEffect(() => {
-    fetch("http://localhost:5000/create-payment-intent", {
+    fetch("https://techxbazar-server-side.vercel.app/create-payment-intent", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -84,7 +84,7 @@ const CheckoutForm = ({ order }) => {
         orderId: _id,
         productId: productId,
       };
-      fetch("http://localhost:5000/payments", {
+      fetch("https://techxbazar-server-side.vercel.app/payments", {
         method: "POST",
         headers: {
           "content-type": "application/json",

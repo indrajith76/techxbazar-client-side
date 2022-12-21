@@ -5,7 +5,7 @@ const useSeller = (email) => {
   const [isSellerLoading, setIsSellerLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/users/seller/${email}`, {
+    fetch(`https://techxbazar-server-side.vercel.app/users/seller/${email}`, {
       headers: {
         "content-type": "application/json",
         authorization: `bearer ${localStorage.getItem("techxBazarToken")}`,

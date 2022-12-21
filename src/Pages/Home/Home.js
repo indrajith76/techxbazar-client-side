@@ -10,30 +10,65 @@ import ProductCard from "../../components/ProductCard/ProductCard";
 import { FaArrowRight } from "react-icons/fa";
 import Loader from "../../components/Loader/Loader";
 import { useQuery } from "@tanstack/react-query";
+import Marquee from "react-fast-marquee";
 
 const AutoplaySlider = withAutoplay(AwesomeSlider);
 
 const Home = () => {
   const [categories, setCategories] = useState([]);
+  // const [latestProducts, setLatestProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/categories").then((data) => {
-      setCategories(data.data);
-    });
+    axios
+      .get("https://techxbazar-server-side.vercel.app/categories")
+      .then((data) => {
+        setCategories(data.data);
+      });
     setLoading(false);
   }, []);
 
   const { data: advertiseItems, isLoading } = useQuery({
     queryKey: ["advertiseProducts"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:5000/advertiseProducts");
+      const res = await fetch(
+        "https://techxbazar-server-side.vercel.app/advertiseProducts"
+      );
       const data = await res.json();
       return data;
     },
-  }); 
+  });
 
-  if (loading || isLoading) {
+  const { data: latestProducts, isLoading:loadLatestProducts } = useQuery({
+    queryKey: ["latestProducts"],
+    queryFn: async () => {
+      const res = await fetch(
+        "https://techxbazar-server-side.vercel.app/latestProducts"
+      );
+      const data = await res.json();
+      return data;
+    },
+  });
+
+  // useEffect(() => {
+  //   axios
+  //     .get("https://techxbazar-server-side.vercel.app/latestProducts")
+  //     .then((data) => {
+  //       setLatestProducts(data.data);
+  //     });
+  //   setLoading(false);
+  // }, []);
+
+  const clients = [
+    "https://i.ibb.co/DpfWtZB/444.png",
+    "https://i.ibb.co/DLZP8FB/333.png",
+    "https://i.ibb.co/RYmCyrH/222.png",
+    "https://i.ibb.co/dGYPQ9x/555.png",
+    "https://i.ibb.co/RYmCyrH/222.png",
+    "https://i.ibb.co/b5zdw90/111.png",
+  ];
+
+  if (loading || isLoading || loadLatestProducts) {
     return <Loader></Loader>;
   }
 
@@ -167,11 +202,11 @@ const Home = () => {
           </div>
         </div>
       </AutoplaySlider>
-      {advertiseItems.length > 0 && (
+      {advertiseItems?.length > 0 && (
         <div className="my-20">
-          <h2 className="text-4xl mb-10">Advertised Items</h2>
+          <h2 className="text-4xl mb-10 font-semibold">Advertised Items</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {advertiseItems.map((advertiseItem) => (
+            {advertiseItems?.map((advertiseItem) => (
               <ProductCard
                 key={advertiseItem?._id}
                 product={advertiseItem}
@@ -180,7 +215,7 @@ const Home = () => {
           </div>
         </div>
       )}
-      <div className="my-20" id="categories">
+      <div className="my-28" id="categories">
         <h2 className="text-4xl font-semibold mb-10">Product Categories</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mx-5 lg:mx-0">
           {categories.map((category) => (
@@ -204,58 +239,131 @@ const Home = () => {
           ))}
         </div>
       </div>
-      <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
-      <div className="grid gap-5 row-gap-8 lg:grid-cols-2">
-        <div className="flex flex-col justify-center">
-          <div className="max-w-xl mb-6">
-            <h2 className="max-w-lg mb-6 font-sans text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:leading-none">
-              Find your best laptop
-              <br className="hidden md:block" />
-              form our {' '}
-              <span className="relative px-1">
-                <div className="absolute inset-x-0 bottom-0 h-3 transform -skew-x-12 bg-teal-accent-400" />
-                <span className="relative inline-block text-deep-purple-accent-400">
-                  best sellers
-                </span>
-              </span>
-            </h2>
-            <p className="text-base text-gray-700 md:text-lg">
-            Tech Exchange Bazar is a reselling platform of laptops.
-Where user can find their budget friendly laptops using this platform.
-            </p>
-          </div>
-          <div className="grid gap-5 row-gap-8 sm:grid-cols-2">
-            <div className="bg-white border-l-4 shadow-sm border-deep-purple-accent-400">
-              <div className="h-full p-5 border border-l-0 rounded-r">
-                <h6 className="mb-2 font-semibold leading-5">
-                  We are care about you
-                </h6>
-                <p className="text-sm text-gray-900">
-                  You get best budget friendly products form this platform also best product.
-                </p>
-              </div>
-            </div>
-            <div className="bg-white border-l-4 shadow-sm border-deep-purple-accent-400">
-              <div className="h-full p-5 border border-l-0 rounded-r">
-                <h6 className="mb-2 font-semibold leading-5">
-                  A business big enough that it could be listed
-                </h6>
-                <p className="text-sm text-gray-900">
-                  We are provide best verify seller in this plateform. every seller are friendly and seller best one.
-                </p>
-              </div>
-            </div>
+
+      {latestProducts.length > 0 && (
+        <div className="my-28">
+          <h2 className="text-4xl mb-10 font-semibold">Latest Items</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {latestProducts.map((advertiseItem) => (
+              <ProductCard
+                key={advertiseItem?._id}
+                product={advertiseItem}
+              ></ProductCard>
+            ))}
           </div>
         </div>
-        <div>
-          <img
-            className="object-cover w-full h-56 rounded shadow-lg sm:h-96"
-            src="https://www.technopat.net/wp-content/uploads/2022/02/2021-macbook-pro-ekran-isinma-sorunu.jpg"
-            alt=""
-          />
+      )}
+
+      <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
+        <div className="grid gap-5 row-gap-8 lg:grid-cols-2">
+          <div className="flex flex-col justify-center">
+            <div className="max-w-xl mb-6">
+              <h2 className="max-w-lg mb-6 font-sans text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:leading-none">
+                Find your best laptop
+                <br className="hidden md:block" />
+                form our{" "}
+                <span className="relative px-1">
+                  <div className="absolute inset-x-0 bottom-0 h-3 transform -skew-x-12 bg-teal-accent-400" />
+                  <span className="relative inline-block text-deep-purple-accent-400">
+                    best sellers
+                  </span>
+                </span>
+              </h2>
+              <p className="text-base text-gray-700 md:text-lg">
+                Tech Exchange Bazar is a reselling platform of laptops. Where
+                user can find their budget friendly laptops using this platform.
+              </p>
+            </div>
+            <div className="grid gap-5 row-gap-8 sm:grid-cols-2">
+              <div className="bg-white border-l-4 shadow-sm border-deep-purple-accent-400">
+                <div className="h-full p-5 border border-l-0 rounded-r">
+                  <h6 className="mb-2 font-semibold leading-5">
+                    We are care about you
+                  </h6>
+                  <p className="text-sm text-gray-900">
+                    You get best budget friendly products form this platform
+                    also best product.
+                  </p>
+                </div>
+              </div>
+              <div className="bg-white border-l-4 shadow-sm border-deep-purple-accent-400">
+                <div className="h-full p-5 border border-l-0 rounded-r">
+                  <h6 className="mb-2 font-semibold leading-5">
+                    A business big enough that it could be listed
+                  </h6>
+                  <p className="text-sm text-gray-900">
+                    We are provide best verify seller in this plateform. every
+                    seller are friendly and seller best one.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <img
+              className="object-cover w-full h-56 rounded shadow-lg sm:h-96"
+              src="https://www.technopat.net/wp-content/uploads/2022/02/2021-macbook-pro-ekran-isinma-sorunu.jpg"
+              alt=""
+            />
+          </div>
         </div>
       </div>
-    </div>
+
+      <div className="my-28">
+        <h2 className="text-4xl mb-16 font-semibold text-center">
+          Our Clients
+        </h2>
+        <div className="grid grid-cols-3 gap-5 px-5 justify-items-center lg:hidden">
+          {clients.map((img) => (
+            <img className="w-[50%]" src={img} alt="" />
+          ))}
+        </div>
+        <div className="hidden lg:block">
+          <Marquee>
+            <div className="flex justify-items-center">
+              {clients.map((img) => (
+                <img className="h-36 ml-20" src={img} alt="" />
+              ))}
+            </div>
+          </Marquee>
+        </div>
+      </div>
+
+      <div className="my-28">
+        <form className="md:w-[75%] lg:w-[45%] border p-5 md:p-10 mx-auto shadow-lg rounded-lg">
+          <h3 className="text-center text-4xl mb-10 font-semibold">
+            Contact Us
+          </h3>
+          <label htmlFor="email">E-mail</label>
+          <input
+            className="h-10 rounded border w-full my-5 pl-3"
+            type="email"
+            name="email"
+            id="email"
+            placeholder="Email"
+          />
+          <label htmlFor="sub">Subject</label>
+          <input
+            className="h-10 rounded border w-full my-5 pl-3"
+            type="text"
+            name="sub"
+            id="sub"
+            placeholder="Subject"
+          />
+          <textarea
+            className="rounded border w-full my-5 pl-3 pt-2"
+            placeholder="write your message here"
+            name="message"
+            id="message"
+            rows="5"
+          ></textarea>
+          <div className="flex justify-center">
+            <button className="bg-primary text-white py-2 px-10 rounded">
+              Send
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

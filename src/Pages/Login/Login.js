@@ -13,15 +13,14 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { resetPassword, signIn, googleSignIn } =
-    useContext(AuthContext);
-    const [loggedInUserEmail, setLoggedInUserEmail] = useState("");
-    const [token] = useToken(loggedInUserEmail); 
-    
-    const navigate = useNavigate();
-    const location = useLocation();
+  const { resetPassword, signIn, googleSignIn } = useContext(AuthContext);
+  const [loggedInUserEmail, setLoggedInUserEmail] = useState("");
+  const [token] = useToken(loggedInUserEmail);
 
-  const from = location?.state?.form?.pathname || '/';
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location?.state?.form?.pathname || "/";
 
   const [isOnModal, setIsOnModal] = useState(true);
 
@@ -34,16 +33,16 @@ const Login = () => {
     const password = data.password;
     signIn(email, password)
       .then((result) => {
-        const user = result.user; 
+        const user = result.user;
         toast.success(
           `Login successfully. Congratulations ${user.displayName}.`
         );
         setLoggedInUserEmail(user.email);
       })
       .catch((err) => {
-        console.error(err)
-        toast.error(err.message.slice(22, err?.message?.length-2))
-    });
+        console.error(err);
+        toast.error(err.message.slice(22, err?.message?.length - 2));
+      });
   };
 
   const handleResetPassword = (event) => {
@@ -69,7 +68,7 @@ const Login = () => {
           image: user.photoURL,
         };
 
-        fetch("http://localhost:5000/users", {
+        fetch("https://techxbazar-server-side.vercel.app/users", {
           method: "POST",
           headers: {
             "content-type": "application/json",
@@ -77,7 +76,7 @@ const Login = () => {
           body: JSON.stringify(data),
         })
           .then((res) => res.json())
-          .then((data) => { 
+          .then((data) => {
             toast.success("Login successfully.");
           });
       })

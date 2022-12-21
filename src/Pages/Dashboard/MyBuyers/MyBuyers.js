@@ -10,7 +10,7 @@ const MyBuyers = () => {
     queryKey: ["myBuyers"],
     queryFn: async () => {
       const res = await fetch(
-        `http://localhost:5000/myBuyers?email=${user?.email}`
+        `https://techxbazar-server-side.vercel.app/myBuyers?email=${user?.email}`
       );
       const data = await res.json();
       return data;
@@ -30,15 +30,15 @@ const MyBuyers = () => {
             <tr>
               <th></th>
               <th>Email</th>
-              <th>Which Product Buy</th> 
+              <th>Which Product Buy</th>
             </tr>
           </thead>
           <tbody>
             {myBuyers.map((buyer, i) => (
               <tr>
-                <th>{i+1}</th>
+                <th>{i + 1}</th>
                 <td>{buyer.buyerEmail}</td>
-                <td>{buyer.productName}</td> 
+                <td>{buyer.productName}</td>
               </tr>
             ))}
           </tbody>

@@ -42,11 +42,11 @@ const AddAProduct = () => {
             resalePrice: data.resalePrice,
             sellerName: user.displayName,
             sellerImage: user.photoURL,
-            sellerEmail:user.email,
+            sellerEmail: user.email,
             yearsOfUse: data.yearOfUse,
           };
 
-          fetch("http://localhost:5000/products", {
+          fetch("https://techxbazar-server-side.vercel.app/products", {
             method: "POST",
             headers: {
               "content-type": "application/json",

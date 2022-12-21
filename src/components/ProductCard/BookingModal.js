@@ -19,7 +19,7 @@ const BookingModal = ({ product, setIsModalOn }) => {
       buyerEmail: user.email,
     };
 
-    fetch("http://localhost:5000/myOrders", {
+    fetch("https://techxbazar-server-side.vercel.app/myOrders", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(bookProduct),

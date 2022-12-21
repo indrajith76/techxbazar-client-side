@@ -5,7 +5,7 @@ const useAdmin = (email) => {
   const [isAdminLoading, setIsAdminLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/users/admin/${email}`, {
+    fetch(`https://techxbazar-server-side.vercel.app/users/admin/${email}`, {
       headers: {
         "content-type": "application/json",
         authorization: `bearer ${localStorage.getItem("techxBazarToken")}`,
